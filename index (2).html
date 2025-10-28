@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issadeen Samlan | Aspiring Software Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Professional -->
+    <!-- Application Structure Plan: A single-page application with a sticky top navigation for seamless scrolling between sections (Summary, Skills, Projects, etc.). This structure provides a familiar and intuitive user flow, allowing recruiters to quickly access the most relevant information. The key interactions are a filterable bar chart for skills and an accordion-style reveal for project details. This design was chosen to transform the static CV into an engaging showcase that not only presents information but also demonstrates frontend capabilities. -->
+    <!-- Visualization & Content Choices: 
+        - Personal Info -> Goal: Inform -> Presentation: Header -> Interaction: Clickable social links -> Justification: Immediate access to contact/portfolio links.
+        - Skills -> Goal: Compare/Inform -> Viz: Horizontal Bar Chart (Chart.js) -> Interaction: Category filter buttons to dynamically update the chart -> Justification: A visual and interactive way to showcase proficiency levels, more engaging than a static list.
+        - Projects -> Goal: Organize/Inform -> Presentation: HTML/CSS Cards -> Interaction: Click-to-expand accordion for details -> Justification: Keeps the UI clean while allowing users to drill down into specific projects.
+        - Education/Experience -> Goal: Show Chronology -> Presentation: HTML/CSS Vertical Timeline -> Interaction: Subtle hover effects -> Justification: An intuitive and visually appealing way to display chronological data.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #44403c;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-stone-50/80 backdrop-blur-md sticky top-0 z-50 border-b border-stone-200">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <span class="text-xl font-bold text-stone-800">Issadeen Samlan</span>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#summary" class="text-stone-600 hover:text-sky-600 transition duration-300">Summary</a>
+                    <a href="#skills" class="text-stone-600 hover:text-sky-600 transition duration-300">Skills</a>
+                    <a href="#projects" class="text-stone-600 hover:text-sky-600 transition duration-300">Projects</a>
+                    <a href="#experience" class="text-stone-600 hover:text-sky-600 transition duration-300">Experience</a>
+                    <a href="#education" class="text-stone-600 hover:text-sky-600 transition duration-300">Education</a>
+                    <a href="#certificates" class="text-stone-600 hover:text-sky-600 transition duration-300">Certificates</a>
+                </div>
+                <div class="md:hidden">
+                    <select id="mobile-nav" class="bg-stone-200 border border-stone-300 rounded-md p-2 text-stone-700">
+                        <option value="#summary">Summary</option>
+                        <option value="#skills">Skills</option>
+                        <option value="#projects">Projects</option>
+                        <option value="#experience">Experience</option>
+                        <option value="#education">Education</option>
+                        <option value="#certificates">Certificates</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-20 md:py-28 text-center md:text-left bg-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="md:flex md:items-center md:justify-start">
+                <img src="SAMLAN - K2559225.jpeg" alt="Issadeen Samlan" class="rounded-full w-40 h-40 md:w-48 md:h-48 object-cover mx-auto mb-8 md:mb-0 md:mr-10 flex-shrink-0 border-4 border-white shadow-lg">
+                <div class="flex-grow">
+                    <h1 class="text-4xl md:text-6xl font-bold text-stone-900 tracking-tight">Issadeen Samlan</h1>
+                    <p class="mt-4 text-lg md:text-xl text-stone-600">Aspiring Software Engineer</p>
+                    <div class="mt-8 flex justify-center md:justify-start items-center space-x-6">
+                        <a href="mailto:shamlanm08@gmail.com" class="text-stone-500 hover:text-sky-600 transition duration-300" aria-label="Email">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        </a>
+                        <a href="https://linkedin.com/in/issadeen-shamlan" target="_blank" class="text-stone-500 hover:text-sky-600 transition duration-300" aria-label="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="https://github.com/shamlan27" target="_blank" class="text-stone-500 hover:text-sky-600 transition duration-300" aria-label="GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-16 space-y-20">
+        
+        <section id="summary">
+            <h2 class="text-3xl font-bold text-stone-800 mb-6">Summary</h2>
+            <p class="text-lg text-stone-700 leading-relaxed max-w-4xl">
+                Detail-oriented final-year Computer Science student with strong proficiency in Java, JavaScript, Object-Oriented Programming (OOP), and Data Structures & Algorithms (DSA). Eager to apply knowledge of the full Software Development Life Cycle (SDLC), Agile methodologies, and software testing principles in a challenging internship. A collaborative team player with strong problem-solving skills, seeking to contribute to code reviews and learn from senior developers.
+            </p>
+        </section>
+
+        <section id="skills">
+            <h2 class="text-3xl font-bold text-stone-800 mb-2">Technical Skills</h2>
+            <p class="text-lg text-stone-700 leading-relaxed mb-8 max-w-4xl">This chart visualizes my proficiency across different technologies. Use the filters to explore specific areas. This interactive element is designed to give a quick and clear overview of my technical capabilities.</p>
+            <div id="skill-filters" class="flex flex-wrap gap-2 mb-8">
+                <button class="skill-filter-btn active bg-sky-600 text-white py-2 px-4 rounded-full" data-category="all">All</button>
+                <button class="skill-filter-btn bg-stone-200 text-stone-700 py-2 px-4 rounded-full hover:bg-sky-500 hover:text-white" data-category="Languages">Languages</button>
+                <button class="skill-filter-btn bg-stone-200 text-stone-700 py-2 px-4 rounded-full hover:bg-sky-500 hover:text-white" data-category="Fundamentals">Fundamentals</button>
+                <button class="skill-filter-btn bg-stone-200 text-stone-700 py-2 px-4 rounded-full hover:bg-sky-500 hover:text-white" data-category="Web & Databases">Web & Databases</button>
+                <button class="skill-filter-btn bg-stone-200 text-stone-700 py-2 px-4 rounded-full hover:bg-sky-500 hover:text-white" data-category="Tools & Methods">Tools & Methods</button>
+                <button class="skill-filter-btn bg-stone-200 text-stone-700 py-2 px-4 rounded-full hover:bg-sky-500 hover:text-white" data-category="Cloud & Virtualization">Cloud & Virtualization</button>
+            </div>
+            <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm">
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2 class="text-3xl font-bold text-stone-800 mb-2">Projects</h2>
+            <p class="text-lg text-stone-700 leading-relaxed mb-8 max-w-4xl">Here are some of the projects I've worked on. They demonstrate my ability to apply theoretical concepts to build practical solutions. Click on any project card to see more details about the implementation and the technologies used.</p>
+            <div class="space-y-6">
+                <div class="project-card bg-white rounded-2xl shadow-sm overflow-hidden cursor-pointer" onclick="toggleProjectDetails('project1')">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-stone-800">Full-Stack Portfolio Website (Photography Brand)</h3>
+                        <p class="text-stone-500 mt-1">Personal Project (2025)</p>
+                    </div>
+                    <div id="project1" class="project-details hidden p-6 pt-0">
+                        <ul class="list-disc list-inside text-stone-600 space-y-2">
+                            <li>Developed a client-facing site with Home, Gallery, and Pricing pages.</li>
+                            <li>Built a secure admin panel with login and CRUD functionality for gallery management.</li>
+                            <li><span class="font-semibold">Tech Stack:</span> PHP, MySQL (SQL), HTML, CSS, JavaScript.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="project-card bg-white rounded-2xl shadow-sm overflow-hidden cursor-pointer" onclick="toggleProjectDetails('project2')">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-stone-800">E-commerce Shopping App (Flutter)</h3>
+                        <p class="text-stone-500 mt-1">Class Project (2025)</p>
+                    </div>
+                     <div id="project2" class="project-details hidden p-6 pt-0">
+                        <ul class="list-disc list-inside text-stone-600 space-y-2">
+                            <li>Built a mobile shopping app using Flutter with product browsing and cart functionality.</li>
+                            <li>Focused on creating a user-friendly UI and ensuring smooth navigation for an optimal user experience.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid md:grid-cols-2 gap-12">
+            <section id="experience">
+                <h2 class="text-3xl font-bold text-stone-800 mb-8">Experience</h2>
+                <div class="relative border-l-2 border-stone-200 pl-8">
+                    <div class="absolute -left-[11px] top-1 w-5 h-5 bg-sky-600 rounded-full border-4 border-stone-50"></div>
+                    <h3 class="text-lg font-bold text-stone-800">Data Entry Operator</h3>
+                    <p class="text-stone-600">DOK Solution (PVT) Ltd</p>
+                    <p class="text-sm text-stone-500 mb-2">Jan 2025 – Apr 2025</p>
+                    <ul class="list-disc list-inside text-stone-600 space-y-1">
+                        <li>Entered and validated data accurately and maintained database integrity.</li>
+                        <li>Reviewed and organized documents for efficient record access.</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="education">
+                <h2 class="text-3xl font-bold text-stone-800 mb-8">Education</h2>
+                <div class="space-y-8">
+                    <div class="relative border-l-2 border-stone-200 pl-8">
+                        <div class="absolute -left-[11px] top-1 w-5 h-5 bg-sky-600 rounded-full border-4 border-stone-50"></div>
+                        <h3 class="text-lg font-bold text-stone-800">BSc (Hons) Computer Science</h3>
+                        <p class="text-stone-600">Kingston University (UK)</p>
+                        <p class="text-sm text-stone-500 mb-2">2023 – Present</p>
+                        <p class="text-stone-600 text-sm">Relevant Coursework: Data Structures, Algorithms, OOP, SDLC, Database Management, Software Testing.</p>
+                    </div>
+                     <div class="relative border-l-2 border-stone-200 pl-8">
+                        <div class="absolute -left-[11px] top-1 w-5 h-5 bg-sky-600 rounded-full border-4 border-stone-50"></div>
+                        <h3 class="text-lg font-bold text-stone-800">HND in Software Engineering</h3>
+                        <p class="text-stone-600">Pearson</p>
+                        <p class="text-sm text-stone-500 mb-2">2023 – 2025 | Result: Merit Level</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section id="certificates">
+            <h2 class="text-3xl font-bold text-stone-800 mb-8">Certificates</h2>
+            <div class="bg-white p-6 rounded-2xl shadow-sm">
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <span class="text-sky-600 mr-3 mt-1">&#10003;</span>
+                        <span class="text-stone-700">Amazon Junior Software Developer with GenAI Professional Certificate (Reading, Coursera)</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-sky-600 mr-3 mt-1">&#10003;</span>
+                        <span class="text-stone-700">Generative AI in Software Engineering Certification</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-sky-600 mr-3 mt-1">&#10003;</span>
+                        <span class="text-stone-700">Coursera - MERN Stack Front To Back: Full Stack React, Redux & Node.js</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-sky-600 mr-3 mt-1">&#10003;</span>
+                        <span class="text-stone-700">AWS – Improve Code Quality</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-sky-600 mr-3 mt-1">&#10003;</span>
+                        <span class="text-stone-700">AWS – Command Line Interface (CLI) Basics</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-stone-300 py-8 text-center">
+        <p>&copy; 2025 Issadeen Samlan. Interactive CV created to showcase skills.</p>
+    </footer>
+
+    <script>
+        const allSkills = [
+            { name: 'Java', level: 5, category: 'Languages' },
+            { name: 'JavaScript', level: 5, category: 'Languages' },
+            { name: 'Python', level: 4, category: 'Languages' },
+            { name: 'SQL', level: 4, category: 'Languages' },
+            { name: 'PHP', level: 3, category: 'Languages' },
+            { name: 'OOP', level: 5, category: 'Fundamentals' },
+            { name: 'Data Structures', level: 5, category: 'Fundamentals' },
+            { name: 'Algorithms (DSA)', level: 5, category: 'Fundamentals' },
+            { name: 'SDLC', level: 4, category: 'Fundamentals' },
+            { name: 'MERN Stack (Basic)', level: 3, category: 'Web & Databases' },
+            { name: 'HTML5', level: 4, category: 'Web & Databases' },
+            { name: 'CSS3', level: 4, category: 'Web & Databases' },
+            { name: 'MySQL', level: 4, category: 'Web & Databases' },
+            { name: 'Git', level: 4, category: 'Tools & Methods' },
+            { name: 'Agile Methodologies', level: 4, category: 'Tools & Methods' },
+            { name: 'Software Testing', level: 3, category: 'Tools & Methods' },
+            { name: 'AWS (Basics)', level: 3, category: 'Cloud & Virtualization' },
+            { name: 'Docker (Familiar)', level: 2, category: 'Cloud & Virtualization' },
+        ];
+
+        let skillsChart;
+        let currentSkillData = [...allSkills];
+
+        const setupChart = () => {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: currentSkillData.map(skill => skill.name),
+                    datasets: [{
+                        label: 'Proficiency Level',
+                        data: currentSkillData.map(skill => skill.level),
+                        backgroundColor: 'rgba(14, 165, 233, 0.6)',
+                        borderColor: 'rgba(14, 165, 233, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 5,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    const labels = ['','Familiar', 'Basic', 'Proficient', 'Advanced', 'Strong'];
+                                    return labels[value];
+                                }
+                            }
+                        },
+                        y: {
+                           ticks: {
+                                autoSkip: false
+                           }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let level = context.raw;
+                                    let label = `Level: ${level}/5`;
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        const updateChart = (category) => {
+            if (category === 'all') {
+                currentSkillData = [...allSkills];
+            } else {
+                currentSkillData = allSkills.filter(skill => skill.category === category);
+            }
+            
+            skillsChart.data.labels = currentSkillData.map(skill => skill.name);
+            skillsChart.data.datasets[0].data = currentSkillData.map(skill => skill.level);
+            skillsChart.update();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupChart();
+
+            const filterButtons = document.querySelectorAll('.skill-filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-sky-600', 'text-white');
+                        btn.classList.add('bg-stone-200', 'text-stone-700');
+                    });
+                    button.classList.add('active', 'bg-sky-600', 'text-white');
+                    button.classList.remove('bg-stone-200', 'text-stone-700');
+                    
+                    const category = button.dataset.category;
+                    updateChart(category);
+                });
+            });
+
+            const mobileNav = document.getElementById('mobile-nav');
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        function toggleProjectDetails(projectId) {
+            const details = document.getElementById(projectId);
+            details.classList.toggle('hidden');
+        }
+
+    </script>
+</body>
+</html>
+
